@@ -30,7 +30,7 @@ bstack-check <dir>    validate a plugin's skills, links, and manifest
 
 ## What is in it, and when each part loads
 
-Only the three `SKILL.md` descriptions are always in context. Everything else is read on demand, by the path the skill names.
+Only the three `SKILL.md` descriptions are always in context, about 370 tokens per session as measured by `claude plugin details bstack`. Everything else is read on demand, by the path the skill names.
 
 | Path | What it is | Loads when |
 |---|---|---|
