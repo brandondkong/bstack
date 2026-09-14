@@ -29,6 +29,23 @@ Read the file in full before applying a principle. Each entry says when it appli
 
 **Core**
 - **Laziness Protocol** (`principles/laziness-protocol.md`). Refactoring, sizing a diff, or tempted to add abstractions or layers. Bias to deletion and the smallest change.
+- **Foundational Thinking** (`principles/foundational-thinking.md`). Before writing logic. Get the core types and data structures right and downstream code becomes obvious.
+- **Redesign from First Principles** (`principles/redesign-from-first-principles.md`). Integrating a new requirement into an existing design. Build as if it had been foundational from day one.
+- **Attack the Premise** (`principles/attack-the-premise.md`). Two or more fixes sharing one premise have failed the same gate. Question the premise instead of writing a third fix.
+- **Subtract Before You Add** (`principles/subtract-before-you-add.md`). Sequencing an addition, refactor, or rewrite. Remove dead weight first, then build on the simpler base.
+- **Minimize Reader Load** (`principles/minimize-reader-load.md`). Shaping or reviewing code that is hard to trace. Count layers and hidden state, collapse one-caller wrappers.
+- **Outcome-Oriented Execution** (`principles/outcome-oriented-execution.md`). Planned rewrites and migrations with phase boundaries. Converge on the target, don't preserve throwaway intermediate states.
+- **Experience First** (`principles/experience-first.md`). Product, UX, or feature-scope tradeoffs. Choose user delight over implementation convenience.
+- **Exhaust the Design Space** (`principles/exhaust-the-design-space.md`). A novel interaction or architectural decision with no precedent. Build 2-3 competing prototypes and compare.
+- **Build the Lever** (`principles/build-the-lever.md`). Any non-trivial work. Build the tool that does or proves it. The tool is the artifact a reviewer reruns.
+
+**Architecture**
+- **Model the Domain** (`principles/model-the-domain.md`). Stateful logic, heavy branching, or a shape assumption repeated across files. Encode the domain in a structure, not scattered conditionals.
+- **Boundary Discipline** (`principles/boundary-discipline.md`). Wiring validation, error handling, or framework adapters. Guards at the boundary, trust internal types, keep logic pure.
+- **Type System Discipline** (`principles/type-system-discipline.md`). Designing types or a signature in any typed language. Make illegal states unrepresentable.
+- **Make Operations Idempotent** (`principles/make-operations-idempotent.md`). Commands, lifecycle steps, and loops that run amid crashes and retries. Converge to the same end state.
+- **Migrate Callers Then Delete Legacy APIs** (`principles/migrate-callers-then-delete-legacy-apis.md`). A new internal API while old callers exist. Migrate and delete in one wave.
+- **Separate Before Serializing Shared State** (`principles/separate-before-serializing-shared-state.md`). Concurrent actors might write the same file, branch, or key. Eliminate the sharing first.
 
 **Verification**
 - **Prove It Works** (`principles/prove-it-works.md`). After a task, before declaring done. Verify the real artifact, not a proxy.
