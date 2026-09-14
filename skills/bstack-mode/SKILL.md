@@ -92,13 +92,43 @@ Keep a code comment only for a non-obvious why the code can't show. No comments 
 
 Open a todo list whose first items are the matched playbook's steps, copied verbatim, before any task-specific items. A step you skip stays in the list as `skip: <reason>`.
 
+**Understanding and diagnosis**
+
 - **Investigation.** Read-only question: how does X work, why is Y built this way, are we sure, should we do X or Y. `playbooks/investigation.md`.
+- **Runtime forensics.** Diagnose a live symptom (leak, idle-CPU spin, glitch) from instrumentation. The deliverable is a diagnosis, not a fix. `playbooks/runtime-forensics.md`.
+- **Trace forensics.** Diagnose a captured artifact handed to you after the fact: a profile, trace, spindump, or heap snapshot. `playbooks/trace-forensics.md`.
+
+**Changing code**
+
 - **Bug fix.** A defect to reproduce, root-cause, and fix with runtime evidence. `playbooks/bug-fix.md`.
 - **Feature.** New or changed behavior, built from a named data shape. `playbooks/feature.md`.
 - **Refactoring.** A behavior-preserving change to structure. `playbooks/refactoring.md`.
+- **Perf issue.** A measured slowness to trace and improve against a baseline. One-off. `playbooks/perf-issue.md`.
+- **Hillclimb.** Sustained improvement of one metric against a target, looping hypotheses with before-and-after measurement and one commit per accepted win. `playbooks/hillclimb.md`.
+- **Prototype.** A throwaway sketch to settle a design or empirical question cheaply, instead of asking the user something you could observe. `playbooks/prototype.md`.
+- **Visual parity.** Pixel-exact UI equivalence between two implementations, verified by image diff. `playbooks/visual-parity.md`.
+
+**Process and delivery**
+
 - **Authoring or modifying a skill.** Writing or editing a SKILL.md, playbook, principle, or agent. `playbooks/authoring-a-skill.md`.
 - **Eval.** Testing how a skill, prompt, or structure change affects agent behavior before promoting it. `playbooks/eval.md`.
+- **Multi-phase plan.** Work spanning phases or stacked PRs, where the plan itself is the deliverable. `playbooks/multi-phase-plan.md`.
 - **Opening a PR.** The end of every code-changing playbook. `playbooks/opening-a-pr.md`.
+- **Babysit.** Driving a PR or stack to merge-ready: conflicts, review threads, CI. Any "check on PR X" or "anything outstanding". `playbooks/babysit.md`.
+- **Shipping.** The half after Babysit. Independently verify a green stack, then land the contiguous verified run. `playbooks/shipping.md`.
+
+**Long-running and unattended**
+
+- **Autonomous run.** One task driven to a stated predicate without stopping, inside one session. `playbooks/autonomous-run.md`.
+- **Orchestrate.** A standing project in one coordinator session: multi-day, many coupled PRs, dozens of delegates. `playbooks/orchestrate.md`.
+- **Autopilot-full.** A queue of independent PRs run to merged, one owner each, root-verified before every merge. Needs landing authority granted in this conversation. `playbooks/autopilot-full.md`.
+- **Autopilot-stack.** The same queue built and verified, delivered as one linear stack for you to land. The default when landing authority was not granted. `playbooks/autopilot-stack.md`.
+- **Pause safely.** Suspend in-flight work cleanly so it can be resumed. Explicit request only. `playbooks/pause-safely.md`.
+- **Session pickup.** Resume or take over prior in-flight work from a transcript or pushed branch. `playbooks/session-pickup.md`.
+
+**Housekeeping**
+
+- **Worktree and simulator cleanup.** Reclaim disk by pruning merged or abandoned worktrees and stale simulators, safety-gated. `playbooks/worktree-cleanup.md`.
 
 **No playbook fits.** Write a short bespoke playbook as the first todo items (frame the goal and the check that proves it, then the steps, each ending in a verifiable state) and state it in one line before starting.
 

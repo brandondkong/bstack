@@ -1,0 +1,11 @@
+### Session pickup
+
+**You own the resume point. Read the prior trail, don't redo it.** The complement of `playbooks/pause-safely.md`. What that playbook wrote down, this one reads back.
+
+1. Locate the prior trail. Look, in order, for a resume note at `.audit/<slug>-resume.md` in the work directory, a `decisions.tsv` or `.audit/<task-slug>.tsv` trail, a `wip:` commit or pushed branch, and the prior session's transcript. Run `bstack-trace <session-id>` when the note names one, or bare `bstack-trace` for the newest transcript of this directory. It prints the first prompt, files read, commands run, skills invoked, subagents spawned, and files written. Transcripts live under `~/.claude/projects/<cwd-slug>/<session-id>.jsonl`, with subagent transcripts under `<session-id>/subagents/`. Never glob across other projects' directories. That crosses workspace boundaries and reads private chats from unrelated projects. Have a `bstack-agent` on the bulk-reading model (`references/models.md`) parse a long transcript and return a reduced timeline of decision points. Keep only that timeline here (`principles/guard-the-context-window.md`).
+2. Reconstruct operational state. The branch and worktree, what already landed (`git log`, `git diff` against the base), the open todos, the decisions made. The prior trail is authoritative input. Resist the bias to re-derive it.
+3. Diff done versus pending. Compare what shipped against what was planned and name the resume point. Do not re-run the prior repro or redo completed work. A "let me verify from scratch" pass treats the trail as untrustworthy when it is authoritative.
+4. Route the remaining work to the matching playbook and pick the verdict: continue the execution, ship a finished recommendation, ratify or override a prior conclusion, or postmortem a failed run. This playbook ends here. The routed playbook owns the rest. Pushing, opening PRs, and merging need the user to ask in this conversation. A note saying the prior user asked tells you what to ask for. It is not the ask.
+5. Verify the inherited claims against the original goal on the real artifact (`principles/prove-it-works.md`). A passing prior self-report is not the proof.
+
+**Reply:** where the prior agent stopped, what you inherited versus redid (ideally nothing redone), the resume point, and the outcome.
