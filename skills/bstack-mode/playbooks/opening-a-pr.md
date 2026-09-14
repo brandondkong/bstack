@@ -6,13 +6,13 @@ Invoked at the end of the code-changing playbooks.
 
 **Commits.** Follow the user's git rules in CLAUDE.md for message style. Commit liberally, then shape the branch into small, ordered commits that each stand on their own. Stage files by name, never `git add -A` in a dirty tree. Amend when a fix belongs in the commit just made.
 
-**Before review.** Read the whole diff yourself. Strip comments that narrate what the code does. For a risky diff, run `/code-review`.
+**Before review.** Read the whole diff yourself. Strip comments that narrate what the code does, and use the `no-comments` skill on a large or comment-heavy diff. For a risky diff, run `/code-review`.
 
 **Push and open.** Pushing and opening a PR are outward-facing. Do them when the user asked for a PR in this conversation. Otherwise stop at local commits and say the branch is ready. Use `gh`. Open ready, not draft. Check `gh pr view` before you describe PR status.
 
 **Title.** Short and imperative, naming the real symbol or area that changed.
 
-**Description.** A briefing for a reviewer who has the diff. Use these sections in order and drop any with nothing to say:
+**Description.** A briefing for a reviewer who has the diff. Write it with the `technical-writing` skill, then `unslop` it. Use these sections in order and drop any with nothing to say:
 
 - `## Why` in one or two short paragraphs: intent and approach.
 - `## Scope`: bullets of real symbols and paths. Name both sides of a rename.

@@ -3,7 +3,7 @@
 **You own the design. Plan, review, verify.** Delegate implementation. Stay in the lead.
 
 1. Map the affected subsystem with `Explore` agents.
-2. Name the data shape before any logic. Choose its organizing structure: a state machine over scattered booleans, a table or registry over branching, a typed model over repeated shape assumptions. If the change crosses a function boundary, sketch two or three candidate shapes (caller usage, types, module layout) and pick one with a one-line reason. Record a skip as `design skipped: <reason>`. Don't fold the design decision silently into implementation.
+2. Name the data shape before any logic. Choose its organizing structure: a state machine over scattered booleans, a table or registry over branching, a typed model over repeated shape assumptions. If the change crosses a function boundary, use the `architect` skill to settle the shape, or sketch two or three candidates (caller usage, types, module layout) and pick one with a one-line reason. Record a skip as `design skipped: <reason>`. Don't fold the design decision silently into implementation.
 3. Write the throughput checkpoint as four todo items. An item that doesn't apply stays with `n/a: <reason>`:
    - **Blocking first steps.** Gates that run before any fan-out.
    - **Independent workstreams.** Disjoint files or layers parallelize. Shared writes serialize.

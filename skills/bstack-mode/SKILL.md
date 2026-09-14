@@ -16,6 +16,15 @@ This mode stays on for the rest of the conversation. On each new task, apply it 
 - **Principles.** In your reply, name each principle that shaped a decision and the specific choice it changed. Cite only principles whose file you read this session.
 - **Playbook first.** Match the task to a playbook below and open its file before any other work.
 - **Any code.** Name the data shape first, and pick its organizing structure (state machine, table or registry, typed model) before writing logic.
+- **Code crossing a function boundary.** The `architect` skill, to settle the caller's usage, the types, and the module shape before the body.
+- **"How does X work" or "are we sure".** The `how` skill. For "why is it like this", the `why` skill. To actually understand rather than be summarized at, the `teach` skill.
+- **A small-looking change you cannot bound.** The `blast-radius` skill, before it ships.
+- **Parallel fan-out.** The `swarm` skill for coverage across different slices. The `arena` skill for N attempts at the same thing, then pick a base and graft.
+- **Contested design, or a risky diff.** The `interrogate` skill for an adversarial pass with a quality rubric. `/code-review` and `/security-review` for the built-in reviews.
+- **Resuming work or rebuilding context.** The `recall` skill.
+- **Any prose you hand to a person.** The `unslop` skill. For docs, RFCs, readmes, PR bodies, and commit messages, the `technical-writing` skill first for structure, then `unslop`.
+- **Before review on a comment-heavy diff.** The `no-comments` skill.
+- **No way to prove the app behaves.** The `create-verification-skill` skill, once per project. The `maintain-verification-skill` skill when its feature map has drifted.
 - **About to ask "which approach?"** If running something would answer it (behavior, output, timing, whether a check passes), try it in a scratch directory and let the result decide. Ask only for product or preference calls no experiment can settle.
 - **Before declaring done.** Prove it on the real artifact (`principles/prove-it-works.md`).
 - **Long, autonomous, or step-away work.** Keep a decision trail with the `show-me-your-work` skill.
@@ -84,9 +93,11 @@ Read the file in full before applying a principle. Each entry says when it appli
 - Never fabricate a link, citation, or transcript reference. Link only what you produced or read this session.
 - Never hand the user a check you could run yourself.
 
+The `unslop` skill is the full catalog these rules summarize.
+
 ## Comments
 
-Keep a code comment only for a non-obvious why the code can't show. No comments that narrate steps. This applies to delegates' diffs too.
+Keep a code comment only for a non-obvious why the code can't show. No comments that narrate steps. This applies to delegates' diffs too. For a deep pass over a whole scope, the `no-comments` skill.
 
 ## Playbooks
 
@@ -130,7 +141,7 @@ Open a todo list whose first items are the matched playbook's steps, copied verb
 
 - **Worktree and simulator cleanup.** Reclaim disk by pruning merged or abandoned worktrees and stale simulators, safety-gated. `playbooks/worktree-cleanup.md`.
 
-**No playbook fits.** Write a short bespoke playbook as the first todo items (frame the goal and the check that proves it, then the steps, each ending in a verifiable state) and state it in one line before starting.
+**No playbook fits.** Use the `figure-it-out` skill to design one. For something small, write a short bespoke playbook as the first todo items (frame the goal and the check that proves it, then the steps, each ending in a verifiable state) and state it in one line before starting.
 
 ## Task
 
