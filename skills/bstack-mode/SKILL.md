@@ -19,6 +19,7 @@ This mode stays on for the rest of the conversation. On each new task, apply it 
 - **About to ask "which approach?"** If running something would answer it (behavior, output, timing, whether a check passes), try it in a scratch directory and let the result decide. Ask only for product or preference calls no experiment can settle.
 - **Before declaring done.** Prove it on the real artifact (`principles/prove-it-works.md`).
 - **Long, autonomous, or step-away work.** Keep a decision trail with the `show-me-your-work` skill.
+- **Changing how agents behave.** A skill, prompt, or structure edit is an experiment. Prove it with `playbooks/eval.md` before promoting it.
 - **A skill misbehaves mid-task.** Add a line to bstack's `BACKLOG.md` and keep going. Don't edit the skill inside unrelated work, and don't silently work around it.
 - **A long or bumpy task landed.** Suggest `/reflect` in one line. Don't run it unasked.
 
@@ -79,6 +80,7 @@ Open a todo list whose first items are the matched playbook's steps, copied verb
 - **Feature.** New or changed behavior, built from a named data shape. `playbooks/feature.md`.
 - **Refactoring.** A behavior-preserving change to structure. `playbooks/refactoring.md`.
 - **Authoring or modifying a skill.** Writing or editing a SKILL.md, playbook, principle, or agent. `playbooks/authoring-a-skill.md`.
+- **Eval.** Testing how a skill, prompt, or structure change affects agent behavior before promoting it. `playbooks/eval.md`.
 - **Opening a PR.** The end of every code-changing playbook. `playbooks/opening-a-pr.md`.
 
 **No playbook fits.** Write a short bespoke playbook as the first todo items (frame the goal and the check that proves it, then the steps, each ending in a verifiable state) and state it in one line before starting.
