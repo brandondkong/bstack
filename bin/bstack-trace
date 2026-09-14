@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Report what an agent actually did in a session, from its transcript.
+# Usage: bstack-trace [transcript.jsonl | session-id]   (default: the newest transcript for $PWD)
+#
+# Grade behavior from this, never from an agent's own summary.
+set -euo pipefail
+
+command -v jq >/dev/null || { echo "bstack-trace needs jq" >&2; exit 1; }
+
+project_dir() {
+	printf '%s' "$HOME/.claude/projects/$(printf '%s' "$PWD" | sed 's/[^a-zA-Z0-9]/-/g')"
+}
+
+arg="${1:-}"
+if [ -z "$arg" ]; then
+	dir="$(project_dir)"
+	[ -d "$dir" ] || { echo "no transcripts for $PWD (looked in $dir)" >&2; exit 1; }
+	file="$(ls -t "$dir"/*.jsonl 2>/dev/null | head -1)" || true
+elif [ -f "$arg" ]; then
+	file="$arg"
+else
+	file="$(ls -t "$HOME"/.claude/projects/*/"$arg".jsonl 2>/dev/null | head -1)" || true
+fi
+[ -n "${file:-}" ] && [ -f "$file" ] || { echo "no transcript found for '${arg:-$PWD}'" >&2; exit 1; }
+
+echo "transcript: $file"
+
+tool_uses() {
+	jq -c 'select(.type=="assistant") | .message.content[]? | select(.type=="tool_use")' "$1"
+}
+
+echo
+echo "== first user prompt"
+jq -rs '[.[] | select(.type=="user" and (.isMeta // false | not)) | .message.content
+	| if type=="string" then . else (map(select(.type=="text").text) | join(" ")) end
+	| select(startswith("<local-command-stdout>") | not)] | first // "" ' "$file" 2>/dev/null |
+	tr '\n' ' ' | cut -c1-500
+
+echo
+echo "== tool calls"
+tool_uses "$file" | jq -r .name | sort | uniq -c | sort -rn
+
+echo
+echo "== files read"
+tool_uses "$file" | jq -r 'select(.name=="Read") | .input.file_path' | sort -u
+
+echo
+echo "== skills invoked"
+tool_uses "$file" | jq -r 'select(.name=="Skill") | "\(.input.skill) \(.input.args // "")"' | sort -u
+
+echo
+echo "== subagents spawned"
+tool_uses "$file" | jq -r 'select(.name=="Agent") | "\(.input.subagent_type // "default")\t\(.input.model // "inherit")\t\(.input.description // "")"'
+
+echo
+echo "== commands run"
+tool_uses "$file" | jq -r 'select(.name=="Bash") | .input.command | gsub("\n"; " ") | .[0:160]'
+
+echo
+echo "== files written or edited"
+tool_uses "$file" | jq -r 'select(.name=="Write" or .name=="Edit" or .name=="NotebookEdit") | "\(.name)\t\(.input.file_path // .input.notebook_path)"' | sort -u
+
+sub_dir="${file%.jsonl}/subagents"
+if [ -d "$sub_dir" ]; then
+	echo
+	echo "== subagent transcripts (rerun bstack-trace on each)"
+	ls -1 "$sub_dir"/*.jsonl 2>/dev/null || true
+fi
