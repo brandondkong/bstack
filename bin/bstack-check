@@ -44,11 +44,20 @@ while IFS=: read -r file line _; do
 done < <(grep -rn '—\|–' skills/ agents/ --include='*.md' 2>/dev/null)
 
 # A skill named in prose that does not exist sends the agent looking for nothing.
-absent='how|why|architect|arena|swarm|interrogate|tdd|unslop|technical-writing|figure-it-out|blast-radius|recall|teach|no-comments|deslop|create-verification-skill|maintain-verification-skill|control-ui|control-cli|automate-me'
-while IFS=: read -r file line hit; do
-	err "$file:$line: names the '$hit' skill, which bstack does not ship"
-done < <(grep -rnoE "\*\*($absent)\*\* skill|/($absent)\b" skills/ agents/ --include='*.md' 2>/dev/null |
-	sed -E 's/\*\*([a-z-]+)\*\* skill/\1/; s#/([a-z-]+)$#\1#')
+# The set of real names comes from disk, so this check maintains itself as skills are added.
+shipped=" $(ls -d skills/*/ 2>/dev/null | xargs -n1 basename | tr '\n' ' ')"
+# Claude Code ships these; naming one is legitimate.
+builtin=" code-review security-review run loop init plan context compact resume export reload-plugins skill-doctor artifacts config "
+while IFS=$'\t' read -r loc name; do
+	case "$shipped$builtin" in
+		*" $name "*) ;;
+		*) err "${loc}: names the '$name' skill, which nothing ships. Use a real skill or describe the action." ;;
+	esac
+done < <(for f in $(find skills agents -name '*.md' 2>/dev/null); do
+		# Blank out inline code spans first, so a shell command or a D-Bus path is never read as a skill name.
+		sed 's/`[^`]*`/``/g' "$f" | grep -noE '\*\*[a-z][a-z-]+\*\* skill|(^|[ (])/[a-z][a-z-]+' |
+			sed -E "s#^([0-9]+):#$f:\1\t#"
+	done | sed -E 's#\t.*\*\*([a-z-]+)\*\* skill#\t\1#; s#\t.*/([a-z-]+)$#\t\1#')
 
 claude plugin validate . >/dev/null 2>&1 || err "claude plugin validate failed (run it for details)"
 
