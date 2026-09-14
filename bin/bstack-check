@@ -38,6 +38,18 @@ if [ -f "$mode" ]; then
 	done
 fi
 
+# Prose rules the porting pass had to enforce by hand.
+while IFS=: read -r file line _; do
+	err "$file:$line: em or en dash, rewrite as two sentences or use a comma"
+done < <(grep -rn '—\|–' skills/ agents/ --include='*.md' 2>/dev/null)
+
+# A skill named in prose that does not exist sends the agent looking for nothing.
+absent='how|why|architect|arena|swarm|interrogate|tdd|unslop|technical-writing|figure-it-out|blast-radius|recall|teach|no-comments|deslop|create-verification-skill|maintain-verification-skill|control-ui|control-cli|automate-me'
+while IFS=: read -r file line hit; do
+	err "$file:$line: names the '$hit' skill, which bstack does not ship"
+done < <(grep -rnoE "\*\*($absent)\*\* skill|/($absent)\b" skills/ agents/ --include='*.md' 2>/dev/null |
+	sed -E 's/\*\*([a-z-]+)\*\* skill/\1/; s#/([a-z-]+)$#\1#')
+
 claude plugin validate . >/dev/null 2>&1 || err "claude plugin validate failed (run it for details)"
 
 [ "$fail" -eq 0 ] && echo "check: ok"
