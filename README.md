@@ -30,7 +30,7 @@ bstack-check <dir>    validate a plugin's skills, links, and manifest
 
 ## What is in it, and when each part loads
 
-Only the three `SKILL.md` descriptions are always in context, about 490 tokens per session as measured by `claude plugin details bstack`. Everything else is read on demand, by the path the skill names.
+Only the `SKILL.md` descriptions are always in context, about 1,650 tokens per session as measured by `claude plugin details bstack`. Everything else is read on demand, by the path the skill names.
 
 | Path | What it is | Loads when |
 |---|---|---|
@@ -40,10 +40,16 @@ Only the three `SKILL.md` descriptions are always in context, about 490 tokens p
 | `skills/bstack-mode/references/models.md` | Which model each role uses | A skill picks a model for a subagent |
 | `skills/show-me-your-work/` | Decision-trail TSV, its `log.sh` helper, the transcript audit, the cross-model review | You type `/show-me-your-work`, or a long unattended run starts |
 | `skills/reflect/` | Three reviewer prompts and a synthesizer that turn a session into proposed skill edits | You type `/reflect` |
-| `agents/bstack-agent.md` | The delegate the playbooks spawn. Reads the router before working | A playbook spawns a subagent |
-| `bin/bstack-trace` | Prints what a session actually did from its transcript: files read, commands run, skills invoked, subagents spawned | You or a skill runs it |
+| `skills/how/`, `why/`, `teach/`, `recall/`, `blast-radius/` | Understanding: how a subsystem works, why it is like this, an explanation you actually follow, your own prior context, and what a change could break | You invoke one, or the router's triggers send you there |
+| `skills/architect/`, `arena/`, `swarm/`, `figure-it-out/` | Design and fan-out: settle the shape first, N attempts at one task, N slices in parallel, or design a bespoke playbook when none fits | Same |
+| `skills/interrogate/`, `no-comments/` + the `comment-sicko` agent | Adversarial review against a quality rubric, and a deep comment pass | Same |
+| `skills/unslop/`, `technical-writing/`, `bro/` | Prose: cut AI tells, structure a document to a standard, or restate the last message in plain words | Same |
+| `skills/tdd/` | Failing test first, when the user asks or the bug has a cheap local test target | Same |
+| `skills/create-verification-skill/`, `maintain-verification-skill/` | Generate a project-local `verify-<app>` skill that drives your real app (CLI, daemon, service, or GUI) and prove behavior, then keep it honest as the app drifts | Same |
 | `skills/cpp-discipline/`, `skills/python-discipline/` | Ownership, lifetime, typing at boundaries, error handling, and test honesty | Automatically, via `paths:`, only when the session touches a matching file |
-| `bin/bstack-check` | Validates frontmatter, relative links, the router index, the manifest, and two prose rules (no stray dashes, no reference to a skill that isn't shipped) | Before any skill change is committed |
+| `agents/bstack-agent.md`, `agents/comment-sicko.md` | The delegate the playbooks spawn, and a read-only comment reviewer | A playbook or skill spawns one |
+| `bin/bstack-trace` | Prints what a session actually did from its transcript: files read, commands run, skills invoked, subagents spawned | You or a skill runs it |
+| `bin/bstack-check` | Validates frontmatter, relative links, the router index, the manifest, and two prose rules (no stray dashes, no reference to a skill nothing ships) | Before any skill change is committed |
 | `evals/` | Eval cases, one directory each | `claude plugin eval` |
 
 `bin/` is on `PATH` whenever the plugin is enabled.
@@ -80,7 +86,7 @@ pstack's structure, ported by hand and trimmed. What was dropped and why:
 | `make-bot-ui` | Grok Bot webhooks over Tailscale, specific to another vendor |
 | Origin CLI, Graphite, bugbot, Cursor cloud agents | No Claude Code equivalent. Every forge operation is `gh`, and review triage is `/code-review` |
 
-Still unported, and deliberately deferred: the standalone skills `how`, `why`, `architect`, `arena`, `swarm`, `interrogate`, `tdd`, `unslop`, `technical-writing`, `figure-it-out`, `blast-radius`, `recall`, `teach`, `no-comments`, and the verification-skill generators. Each would add its description to every session, so they get added once there's evidence they earn it. `bstack-check` fails the build if a playbook references one before it exists.
+Everything else is ported. `bstack-check` derives the set of real skills from disk, so any reference to a skill that does not ship fails the build.
 
 ## Adding to it
 
