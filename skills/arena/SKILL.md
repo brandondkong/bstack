@@ -1,6 +1,6 @@
 ---
 name: arena
-description: Arena this. N parallel attempts at the same task, pick the strongest as base, graft the best of the rest into it. Splitting a job into slices is swarm, not arena.
+description: Arena this. N parallel attempts at the same task, pick the strongest as base, graft the best of the rest in. Splitting a job into slices is swarm, not arena.
 disable-model-invocation: true
 ---
 
@@ -29,7 +29,7 @@ If a candidate produces nothing, proceed with N-1 and note the dropout.
 
 ## Phase C: Cross-judge
 
-After every candidate has finished, spawn one read-only judge on the eval-judge row of `../bstack-mode/references/models.md`, a model no candidate used. When every model in the row was a candidate, run the judge on the judgment model and take its independence from the brief instead. Either way it sees the rubric and the candidates by path label only, never the rationales or the model names. It scores each criterion and recommends a base with reasons. It runs while you read in Phase D, never while candidates are still writing.
+After every candidate has finished, spawn one read-only judge on the eval-judge row of `../bstack-mode/references/models.md`, a model no candidate used. When every model in the row was a candidate, run the judge on the judgment model and take its independence from the brief instead. Either way it sees the rubric and the candidates by path label only, never the rationales or the model names. It scores each criterion and recommends a base with reasons. It runs alongside your own reading in Phase D.
 
 ## Phase D: Pick a base
 

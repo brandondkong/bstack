@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Check the playbooks first. Open `../bstack-mode/SKILL.md`, match the task against its Playbooks section, and route there when one fits. A large migration is usually `../bstack-mode/playbooks/multi-phase-plan.md` or `../bstack-mode/playbooks/orchestrate.md`. One task driven to a predicate is `../bstack-mode/playbooks/autonomous-run.md`. This skill is the fallback when none matches, not a first choice.
 
-When you do land here, design the playbook before any code. The deliverable is a sequence of phases that scales rigor to the task, runs the scientific method, and leaves a trail a human can audit after stepping away. Bias toward rigor. Building the wrong thing costs more than being careful.
+When you do land here, design the playbook before any code. The deliverable is a sequence of phases that scales rigor to the task, runs the scientific method, and leaves a trail a human can audit after stepping away.
 
 Open a todo list whose first item is to read the Principles section of `../bstack-mode/SKILL.md`, then add the phases below.
 
