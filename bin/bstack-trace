@@ -19,7 +19,14 @@ if [ -z "$arg" ]; then
 elif [ -f "$arg" ]; then
 	file="$arg"
 else
-	file="$(ls -t "$HOME"/.claude/projects/*/"$arg".jsonl 2>/dev/null | head -1)" || true
+	# A bare session id resolves within this project only. Searching every project would
+	# read sessions from unrelated work, which the skills that call this are told never to do.
+	file="$(project_dir)/$arg.jsonl"
+	if [ ! -f "$file" ]; then
+		found="$(ls -t "$HOME"/.claude/projects/*/"$arg".jsonl 2>/dev/null | head -1)" || true
+		[ -n "$found" ] && echo "session $arg belongs to $(basename "$(dirname "$found")"), not this project. Pass its full path to read it." >&2
+		file=""
+	fi
 fi
 [ -n "${file:-}" ] && [ -f "$file" ] || { echo "no transcript found for '${arg:-$PWD}'" >&2; exit 1; }
 
