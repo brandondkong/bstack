@@ -1,6 +1,6 @@
 ---
 name: swarm
-description: Swarm this. Split a job into slices, one parallel worker per slice, drain them, return one report. Running the same task N times to pick a winner is arena, not swarm.
+description: Swarm this. Split a job into slices, one parallel worker per slice, drain them, return one report. The same task N times to pick a winner is arena, not swarm.
 disable-model-invocation: true
 ---
 
