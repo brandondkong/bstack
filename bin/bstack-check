@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Validate bstack's skills, agents, and cross-file references.
-# Usage: scripts/check.sh   (from anywhere; exits non-zero on any failure)
+# Validate a plugin's skills, agents, and cross-file references.
+# Usage: bstack-check [plugin-root]   (default: the current git repo root; exits non-zero on failure)
 set -uo pipefail
 shopt -s nullglob
 
-root="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$root"
+root="${1:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+cd "$root" || exit 1
 fail=0
 err() { printf 'FAIL %s\n' "$1"; fail=1; }
 
