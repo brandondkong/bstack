@@ -1,0 +1,15 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "bstack",
+  "description": "Brandon's personal Claude Code plugins.",
+  "owner": {
+    "name": "Brandon Kong"
+  },
+  "plugins": [
+    {
+      "name": "bstack",
+      "description": "Brandon's agent workflow: a mode router with playbooks, principles, blind evals, reflect, and a decision log.",
+      "source": "./"
+    }
+  ]
+}
