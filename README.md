@@ -30,19 +30,20 @@ bstack-check <dir>    validate a plugin's skills, links, and manifest
 
 ## What is in it, and when each part loads
 
-Only the three `SKILL.md` descriptions are always in context, about 370 tokens per session as measured by `claude plugin details bstack`. Everything else is read on demand, by the path the skill names.
+Only the three `SKILL.md` descriptions are always in context, about 490 tokens per session as measured by `claude plugin details bstack`. Everything else is read on demand, by the path the skill names.
 
 | Path | What it is | Loads when |
 |---|---|---|
 | `skills/bstack-mode/SKILL.md` | The router: non-negotiables, principle index, autonomy rules, delegation rules, reply style, playbook list | You type `/bstack-mode` |
-| `skills/bstack-mode/playbooks/*.md` | Investigation, bug fix, feature, refactoring, authoring a skill, eval, opening a PR | The router matches one to the task |
-| `skills/bstack-mode/principles/*.md` | Eight one-rule files: laziness protocol, fix root causes, prove it works, test behavior not implementation, sequence verifiable units, guard the context window, never block on the human, encode lessons in structure | A playbook or the router cites one. Citing a principle you didn't read is against the rules |
+| `skills/bstack-mode/playbooks/*.md` | 23 playbooks, grouped as understanding and diagnosis, changing code, process and delivery, long-running and unattended, and housekeeping | The router matches one to the task |
+| `skills/bstack-mode/principles/*.md` | 23 one-rule files, grouped as core, architecture, verification, delegation, and meta | A playbook or the router cites one. Citing a principle you didn't read is against the rules |
 | `skills/bstack-mode/references/models.md` | Which model each role uses | A skill picks a model for a subagent |
 | `skills/show-me-your-work/` | Decision-trail TSV, its `log.sh` helper, the transcript audit, the cross-model review | You type `/show-me-your-work`, or a long unattended run starts |
 | `skills/reflect/` | Three reviewer prompts and a synthesizer that turn a session into proposed skill edits | You type `/reflect` |
 | `agents/bstack-agent.md` | The delegate the playbooks spawn. Reads the router before working | A playbook spawns a subagent |
 | `bin/bstack-trace` | Prints what a session actually did from its transcript: files read, commands run, skills invoked, subagents spawned | You or a skill runs it |
-| `bin/bstack-check` | Validates frontmatter, relative links, the router index, and the manifest | Before any skill change is committed |
+| `skills/cpp-discipline/`, `skills/python-discipline/` | Ownership, lifetime, typing at boundaries, error handling, and test honesty | Automatically, via `paths:`, only when the session touches a matching file |
+| `bin/bstack-check` | Validates frontmatter, relative links, the router index, the manifest, and two prose rules (no stray dashes, no reference to a skill that isn't shipped) | Before any skill change is committed |
 | `evals/` | Eval cases, one directory each | `claude plugin eval` |
 
 `bin/` is on `PATH` whenever the plugin is enabled.
@@ -67,6 +68,19 @@ Cases today:
 | `decision-log-format` | `/show-me-your-work` writes `decisions.tsv` with the documented header and a row whose evidence points at a real path |
 
 **Blind comparison.** `skills/bstack-mode/playbooks/eval.md` handles "is this wording better than that one". Candidates run in sanitized directories with an organic-looking prompt and no idea they are being measured, a judge on a different model scores them by label, and chain-following is graded from transcripts rather than from what an agent claims it did.
+
+## Where it came from
+
+pstack's structure, ported by hand and trimmed. What was dropped and why:
+
+| Dropped | Reason |
+|---|---|
+| `setup-pstack` | Replaced by `references/models.md`, one table instead of a generated config rule |
+| `typescript-best-practices` | Wrong language for this stack. `cpp-discipline` and `python-discipline` replace it |
+| `make-bot-ui` | Grok Bot webhooks over Tailscale, specific to another vendor |
+| Origin CLI, Graphite, bugbot, Cursor cloud agents | No Claude Code equivalent. Every forge operation is `gh`, and review triage is `/code-review` |
+
+Still unported, and deliberately deferred: the standalone skills `how`, `why`, `architect`, `arena`, `swarm`, `interrogate`, `tdd`, `unslop`, `technical-writing`, `figure-it-out`, `blast-radius`, `recall`, `teach`, `no-comments`, and the verification-skill generators. Each would add its description to every session, so they get added once there's evidence they earn it. `bstack-check` fails the build if a playbook references one before it exists.
 
 ## Adding to it
 
